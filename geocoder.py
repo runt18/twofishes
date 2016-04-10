@@ -43,7 +43,7 @@ class Geocoder:
 
   def geocode(self, query, otherParams = {}):
     otherParams['query'] = query
-    url = 'http://%s/?%s' % (self.host, urllib.urlencode(otherParams))
+    url = 'http://{0!s}/?{1!s}'.format(self.host, urllib.urlencode(otherParams))
     request = urllib2.Request(url)
     response = json.loads(urllib2.urlopen(request).read())
     if len(response['interpretations']) > 0:

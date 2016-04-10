@@ -40,7 +40,7 @@ if len(args) == 0:
 
 inputFile = args[0]
 
-outputFilename = ('eval-%s.html' % datetime.datetime.now()).replace(' ', '_')
+outputFilename = ('eval-{0!s}.html'.format(datetime.datetime.now())).replace(' ', '_')
 
 if os.path.exists("eval-latest.html"):
   os.unlink("eval-latest.html")
@@ -51,7 +51,7 @@ outputFile.write('<meta charset="utf-8">')
 
 def getUrl(server, param):
   if not server.startswith('http'):
-    server = 'http://%s' % server
+    server = 'http://{0!s}'.format(server)
   return server.rstrip('/') + '/' + param.lstrip('/')
 
 def getResponse(server, param):
@@ -98,7 +98,7 @@ class GeocodeFetch(threading.Thread):
       if options.inCountMode:
         m = re.match(r' *(\d+) (.*)', line)
         if not m:
-          print('line did not conform to count mode: %s' % line)
+          print('line did not conform to count mode: {0!s}'.format(line))
           self.queue.task_done()
           continue
         else:
@@ -106,7 +106,7 @@ class GeocodeFetch(threading.Thread):
           lineCount = int(m.group(1))
 
       if count % 100 == 0:
-        print 'processed %d queries' % count
+        print 'processed {0:d} queries'.format(count)
       #print 'processed %d queries' % count
       #print 'procesing: %s' % line
       count += 1
@@ -141,7 +141,7 @@ class GeocodeFetch(threading.Thread):
           return str(o)
 
       def evallog(title, old = None, new = None):
-        responseKey = '%s:%s' % (getId(responseOld), getId(responseNew))
+        responseKey = '{0!s}:{1!s}'.format(getId(responseOld), getId(responseNew))
 
         query = ''
         if 'query' in params:
@@ -165,14 +165,14 @@ class GeocodeFetch(threading.Thread):
           newMessage = ': ' + mkString(new).encode('utf-8')
 
         if 'json' in params:
-          message = ('%s: %s %s<ul>' % (query, title, extraTitle) +
-                   '<li><a href="%s">OLD</a>%s ' % (options.serverOld + param, oldMessage) +
-                   '<li><a href="%s">NEW</a>%s' % (options.serverNew + param, newMessage) +
+          message = ('{0!s}: {1!s} {2!s}<ul>'.format(query, title, extraTitle) +
+                   '<li><a href="{0!s}">OLD</a>{1!s} '.format(options.serverOld + param, oldMessage) +
+                   '<li><a href="{0!s}">NEW</a>{1!s}'.format(options.serverNew + param, newMessage) +
                    '</ul>')
         else:
-          message = ('%s: <b>%s</b><ul>' % (query, title) +
-                   '<li><a href="%s">OLD</a>%s' % (options.serverOld + '/static/geocoder.html#' + param_str, oldMessage) +
-                   '<li><a href="%s">NEW</a>%s' % (options.serverNew + '/static/geocoder.html#' + param_str, newMessage) +
+          message = ('{0!s}: <b>{1!s}</b><ul>'.format(query, title) +
+                   '<li><a href="{0!s}">OLD</a>{1!s}'.format(options.serverOld + '/static/geocoder.html#' + param_str, oldMessage) +
+                   '<li><a href="{0!s}">NEW</a>{1!s}'.format(options.serverNew + '/static/geocoder.html#' + param_str, newMessage) +
                     '</ul>')
 
         for i in xrange(0, lineCount):
@@ -225,7 +225,7 @@ class GeocodeFetch(threading.Thread):
             centerB['lat'],
             centerB['lng'])
           if distance > 0.1:
-            evallog('center moved', '%s miles' % distance)
+            evallog('center moved', '{0!s} miles'.format(distance))
           if 'bounds' in geomA and 'bounds' not in geomB:
             evallog('bounds in OLD, but not NEW')
           elif 'bounds' not in geomA and 'bounds' in geomB:
@@ -258,11 +258,11 @@ if __name__ == '__main__':
   queue.join()
 
   for (sectionName, sectionDict) in evalLogDict.iteritems():
-    outputFile.write('<li><a href="#%s">%s</a>: %s changes' % (sectionName, sectionName, len(sectionDict)))
+    outputFile.write('<li><a href="#{0!s}">{1!s}</a>: {2!s} changes'.format(sectionName, sectionName, len(sectionDict)))
 
   for (sectionName, sectionDict) in evalLogDict.iteritems():
-    outputFile.write('<a name="%s"><h2>%s</h2></a>' % (sectionName, sectionName))
+    outputFile.write('<a name="{0!s}"><h2>{1!s}</h2></a>'.format(sectionName, sectionName))
     for k in sorted(sectionDict, key=lambda x: -1*len(sectionDict[x])):
-      outputFile.write('%d changes\n<br/>' % len(sectionDict[k]))
+      outputFile.write('{0:d} changes\n<br/>'.format(len(sectionDict[k])))
       outputFile.write(sectionDict[k][0])
 

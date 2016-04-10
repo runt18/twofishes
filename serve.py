@@ -45,16 +45,16 @@ sbt = './sbt'
 if options.rebel:
   sbt = './sbt-rebel'
 
-args = ' --preload %s --warmup %s --enable_private_endpoints %s ' % (options.preload, options.warmup, options.enablePrivate)
+args = ' --preload {0!s} --warmup {1!s} --enable_private_endpoints {2!s} '.format(options.preload, options.warmup, options.enablePrivate)
 if (len(options.hotfix) > 0):
-  args += '--hotfix_basepath %s ' % options.hotfix
+  args += '--hotfix_basepath {0!s} '.format(options.hotfix)
 
 if options.console:
   target = 'console'
 else:
   target = 'run-main'
 
-cmd = '%s "server/%s com.foursquare.twofishes.GeocodeFinagleServer %s --host %s --port %d --hfile_basepath %s"' % (sbt, target, args, options.host, options.port, basepath)
+cmd = '{0!s} "server/{1!s} com.foursquare.twofishes.GeocodeFinagleServer {2!s} --host {3!s} --port {4:d} --hfile_basepath {5!s}"'.format(sbt, target, args, options.host, options.port, basepath)
 
 print(cmd)
 os.system(cmd)

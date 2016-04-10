@@ -41,7 +41,9 @@ class Geocoder:
   def __init__(self, host):
     self.host = host
 
-  def geocode(self, query, otherParams = {}):
+  def geocode(self, query, otherParams = None):
+    if otherParams is None:
+      otherParams = {}
     otherParams['query'] = query
     url = 'http://%s/?%s' % (self.host, urllib.urlencode(otherParams))
     request = urllib2.Request(url)

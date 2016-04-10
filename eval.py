@@ -178,11 +178,11 @@ class GeocodeFetch(threading.Thread):
         for i in xrange(0, lineCount):
           evalLogDict[title][responseKey].append(message)
 
-      if (responseOld == None and responseNew == None):
+      if (responseOld is None and responseNew is None):
         pass
-      elif (responseOld == None and responseNew != None):
+      elif (responseOld is None and responseNew is not None):
         evallog('error from OLD, something from NEW')
-      elif (responseNew == None and responseOld != None):
+      elif (responseNew is None and responseOld is not None):
         evallog('error from NEW, something from OLD')
       elif (len(responseOld['interpretations']) == 0 and
           len(responseNew['interpretations']) > 0):

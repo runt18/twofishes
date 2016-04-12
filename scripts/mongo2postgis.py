@@ -20,14 +20,14 @@ polygons = db.polygon_index
 connection = psycopg2.connect(database=options.databaseName, user=options.userName)
 cursor = connection.cursor()
 
-sql = 'CREATE TABLE %s(id bigint PRIMARY KEY, name varchar(200), source varchar(100), woeType integer, geom geometry(MultiPolygon,4326))' % options.tableName
+sql = 'CREATE TABLE {0!s}(id bigint PRIMARY KEY, name varchar(200), source varchar(100), woeType integer, geom geometry(MultiPolygon,4326))'.format(options.tableName)
 cursor.execute(sql)
 
 count = 0
 for feature in features.find({"hasPoly": True}):
   count += 1
   if (count % 10000 == 0):
-    print("processed %d features" % count)
+    print("processed {0:d} features".format(count))
 
   for polygon in polygons.find({"_id": feature['polyId']}):
     source = polygon['source']
@@ -41,12 +41,12 @@ for feature in features.find({"hasPoly": True}):
       if (len(feature['displayNames']) > 0):
         name = feature['displayNames'][0]['name']
 
-    sql = 'INSERT into %s VALUES(%%s, %%s, %%s, %%s, ST_Multi(ST_GeomFromText(%%s, 4326)))' % options.tableName
+    sql = 'INSERT into {0!s} VALUES(%s, %s, %s, %s, ST_Multi(ST_GeomFromText(%s, 4326)))'.format(options.tableName)
     cursor.execute(sql, (feature['_id'], name, polygon['source'], feature['_woeType'], wktGeom))
 
-sql = 'CREATE INDEX ON %s USING btree(source)' % options.tableName
+sql = 'CREATE INDEX ON {0!s} USING btree(source)'.format(options.tableName)
 cursor.execute(sql)
-sql = 'CREATE INDEX ON %s USING btree(woeType)' % options.tableName
+sql = 'CREATE INDEX ON {0!s} USING btree(woeType)'.format(options.tableName)
 cursor.execute(sql)
 
 connection.commit()

@@ -18,4 +18,4 @@ if len(args) != 1:
 host = args[0]
 data = { "token": options.token }
 dataStr = json.dumps(data)
-print urllib2.urlopen('http://%s/private/refreshStore' % host, dataStr).read()
+print urllib2.urlopen('http://{0!s}/private/refreshStore'.format(host), dataStr).read()

@@ -14,7 +14,7 @@ if len(args) != 1:
 
 file = args[0]
 
-cmd = './sbt "server/run-main com.foursquare.twofishes.JsonHotfixFileBuilder %s"' % file
+cmd = './sbt "server/run-main com.foursquare.twofishes.JsonHotfixFileBuilder {0!s}"'.format(file)
 
 print(cmd)
 os.system(cmd)

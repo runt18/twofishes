@@ -7,8 +7,8 @@ csv.field_size_limit(1000000000)
 
 if len(sys.argv) == 2:
   cc = sys.argv[1]
-  reader = open('data/downloaded/%s.txt' % cc)
-  writer = csv.writer(open('data/downloaded/adminCodes-%s.txt' % cc, 'w'), dialect='excel-tab')
+  reader = open('data/downloaded/{0!s}.txt'.format(cc))
+  writer = csv.writer(open('data/downloaded/adminCodes-{0!s}.txt'.format(cc), 'w'), dialect='excel-tab')
 else:
   reader = open('data/downloaded/allCountries.txt')
   writer = csv.writer(open('data/downloaded/adminCodes.txt', 'w'), dialect='excel-tab')

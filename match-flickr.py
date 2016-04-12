@@ -23,7 +23,7 @@ for f in files:
     woetype = int(feature['properties']['place_type_id'])
     bbox = feature['geometry']['bbox']
 
-    url = u"http://dev-blackmad:8081/?query=%s&woeHint=%s" % (urllib.quote(label.encode('utf-8')), woetype)
+    url = u"http://dev-blackmad:8081/?query={0!s}&woeHint={1!s}".format(urllib.quote(label.encode('utf-8')), woetype)
     try:
       response = urllib2.urlopen(url)
       data = response.read()
@@ -61,17 +61,17 @@ for f in files:
             lowlat = bbox[1]
             hilng = bbox[2]
             hilat = bbox[3]
-            output[id] = (fwoetype == woetype, '%s\t%s\t%s\t%s\t%s' % (id,  lowlng, lowlat, hilng, hilat))
+            output[id] = (fwoetype == woetype, '{0!s}\t{1!s}\t{2!s}\t{3!s}\t{4!s}'.format(id, lowlng, lowlat, hilng, hilat))
 
     if not geocodes:
-      print (u'No geocodes for %s %s' % (woeid, label)).encode('utf-8')
+      print (u'No geocodes for {0!s} {1!s}'.format(woeid, label)).encode('utf-8')
     elif not match:
-      print (u'Geocodes, but no match for %s: %s' % (woeid, label)).encode('utf-8')
+      print (u'Geocodes, but no match for {0!s}: {1!s}'.format(woeid, label)).encode('utf-8')
       print bbox
       print '\t' + url
 
 outfile = open('flickr-bbox.tsv', 'w')
 for k in output:
-  outfile.write('%s\n' % output[k][1])
+  outfile.write('{0!s}\n'.format(output[k][1]))
 
 

@@ -10,8 +10,8 @@ except:
 
 alternateNames = open("data/downloaded/alternateNames.txt")
 if len(sys.argv) == 2:
-  print "building buildings for %s" % sys.argv[1]
-  input = open("data/downloaded/%s.txt" % sys.argv[1])
+  print "building buildings for {0!s}".format(sys.argv[1])
+  input = open("data/downloaded/{0!s}.txt".format(sys.argv[1]))
 else:
   print "building buildings for the whole world"
   input = open("data/downloaded/allCountries.txt")

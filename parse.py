@@ -34,7 +34,7 @@ parser.add_option("-g", "--geonamesonly", dest="geonamesonly", action="store_tru
 mongo_version_str = subprocess.Popen('mongod --version', stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=True).stdout.readline().split(' v')[-1]
 mongo_version = mongo_version_str.split('.')
 if mongo_version[0] < 2 or mongo_version[1] < 4:
-  print 'need at least mongo 2.4, you have: %s' % mongo_version_str
+  print 'need at least mongo 2.4, you have: {0!s}'.format(mongo_version_str)
   sys.exit(1)
 
 user_specified_basepath = False
@@ -51,7 +51,7 @@ if not basepath:
 
 if not os.path.exists('indexes'):
   os.mkdir('indexes')
-print "outputting index to %s" % basepath
+print "outputting index to {0!s}".format(basepath)
 if not os.path.exists(basepath):
   os.mkdir(basepath)
 
@@ -62,10 +62,10 @@ def passBoolOpt(opt, value):
   if not opt.startswith('-'):
     opt = '--' + opt
 
-  cmd_opts += ' %s %s' % (opt, str(value).lower())
+  cmd_opts += ' {0!s} {1!s}'.format(opt, str(value).lower())
 
 if options.country:
-  cmd_opts += ' --parse_country %s' % options.country
+  cmd_opts += ' --parse_country {0!s}'.format(options.country)
 else:
   cmd_opts += ' --parse_world true'
 
@@ -85,14 +85,14 @@ if options.reload_data and not options.yes_i_am_sure:
     print "re-run with --noreload if you want to keep your mongo data around instead of rebuilding it"
     sys.exit(1)
 
-cmd = './sbt %s "indexer/run-main com.foursquare.twofishes.importers.geonames.GeonamesParser %s --hfile_basepath %s %s"' % (' '.join(jvm_args), cmd_opts, basepath, ' '.join(args))
+cmd = './sbt {0!s} "indexer/run-main com.foursquare.twofishes.importers.geonames.GeonamesParser {1!s} --hfile_basepath {2!s} {3!s}"'.format(' '.join(jvm_args), cmd_opts, basepath, ' '.join(args))
 print(cmd)
 
-version_file = open(os.path.join(basepath, 'index-gen-info-%s' % now_str), 'w')
-version_file.write('Command: %s\n' % ' '.join(sys.argv))
-version_file.write('User: %s\n' % os.getenv('USER'))
-version_file.write('Date: %s\n' % now_str)
-version_file.write('Host: %s\n' % socket.gethostname())
+version_file = open(os.path.join(basepath, 'index-gen-info-{0!s}'.format(now_str)), 'w')
+version_file.write('Command: {0!s}\n'.format(' '.join(sys.argv)))
+version_file.write('User: {0!s}\n'.format(os.getenv('USER')))
+version_file.write('Date: {0!s}\n'.format(now_str))
+version_file.write('Host: {0!s}\n'.format(socket.gethostname()))
 version_file.close()
 
 if not options.dry_run:
